@@ -1,0 +1,36 @@
+// C++ code
+//
+int sensorPin = 1;
+int temp =0;
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(13, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(A1, INPUT);
+}
+
+void loop()
+{
+  temp = -40 + 0.488155 * (analogRead(A1) - 20);
+  if (temp < 40)
+  {
+  digitalWrite(13, HIGH);
+  digitalWrite(12, LOW);
+  digitalWrite(11, LOW);
+  }
+  if (temp >= 40 && temp <=80)
+  {
+  digitalWrite(13, LOW);
+  digitalWrite(11, LOW);
+  digitalWrite(12, HIGH);
+  }
+  if (temp > 80)
+  { 
+  digitalWrite(13, LOW);
+  digitalWrite(12, LOW);
+  digitalWrite(11, HIGH);
+  }
+  Serial.println(temp);
+}
