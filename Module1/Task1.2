@@ -1,0 +1,59 @@
+int temp = 0;
+int sensorState = 0;
+void setup()
+{
+
+  pinMode(13, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(A1, INPUT);
+  Serial.begin(9600);
+  attachInterrupt (1, detectOn, RISING);
+  attachInterrupt (0, detectOff, FALLING);
+}
+
+void loop()
+{
+  temp = -40 + 0.488155 * (analogRead(A1) - 20);
+  sensorState = digitalRead(2);
+  if (sensorState == HIGH)
+  {
+  Serial.println("Motion Detected");
+  Serial.println(temp);
+  }
+  
+  else if (temp < 40)
+  {
+  digitalWrite(13, HIGH);
+  digitalWrite(12, LOW);
+  digitalWrite(11, LOW); 
+  Serial.println(temp);
+  }
+  
+  else if (temp >= 40)
+  {
+  digitalWrite(13, LOW);
+  digitalWrite(11, LOW);
+  digitalWrite(12, HIGH);
+  Serial.println(temp);
+  }
+  else if (temp >= 80 )
+  { 
+  digitalWrite(13, LOW);
+  digitalWrite(12, LOW);
+  digitalWrite(11, HIGH);
+  Serial.println(temp);
+  }
+  
+  
+}
+void detectOn()
+{
+  digitalWrite(2, HIGH);
+  tone(13, 200, 100);  
+}
+void detectOff()
+{
+  digitalWrite(2, LOW);
+ 
+}
