@@ -1,0 +1,76 @@
+
+volatile boolean ledOn = false;
+double temperature = 0;
+int sensorState = 0;
+int sensorState3 = 0;
+void setup()
+{
+  pinMode(10, OUTPUT);
+  Serial.begin(9600);
+  attachInterrupt (0, firstIntruption, RISING);
+  attachInterrupt (1, secondIntruption, FALLING);
+}
+
+void loop()
+{
+ temperature = -40 + 0.488155 * (analogRead(A1) - 20);
+ sensorState = digitalRead(2);
+ sensorState3 = digitalRead(3);
+  
+  if (sensorState == HIGH)
+  {
+  Serial.println("Motion Detected");
+  Serial.println(temperature);
+  }
+  
+  else if (sensorState3 == HIGH)
+  {
+  Serial.println("Motion Detected");
+  Serial.println(temperature);
+  }
+  else if (temperature < 40)
+  {
+  digitalWrite(13, HIGH);
+  digitalWrite(12, LOW);
+  digitalWrite(11, LOW); 
+  }
+  else if (temperature >= 40)
+  {
+  digitalWrite(13, LOW);
+  digitalWrite(11, LOW);
+  digitalWrite(12, HIGH);
+  
+  }
+  else if (temperature >= 80 )
+  { 
+  digitalWrite(13, LOW);
+  digitalWrite(12, LOW);
+  digitalWrite(11, HIGH);
+   
+  }
+  Serial.println(temperature);
+}
+void firstIntruption()
+{  
+  
+  tone(13, 200, 100);
+  digitalWrite(8,1);
+  delay(5000);
+  digitalWrite(8,0);
+  
+}
+void secondIntruption()
+{ 
+ if(ledOn)
+ {
+   ledOn = false;
+   digitalWrite(8,0);
+ }
+  else
+  {
+    ledOn = true;
+    digitalWrite(8,1);
+  }
+}
+   
+
